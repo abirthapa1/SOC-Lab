@@ -5,8 +5,10 @@ This is a documentation of an incident response report that was done in a contro
 ## Table of Contents
 - [Incident Response Report](#Incident-Response-Report)
   - [Document Control](#Document-Control)
-- [Section 2](#section-2)
-  - [Sub-section 2a](#sub-section-2a)
+  - [Executive Summary](#Executive-Summary)
+1. [Preparation](#Preparation)
+  1.1 [Environment and Tooling](#Environment-and-Tooling)
+  1.2
 - [Section 3](#section-3)
 
 # Incident Response Report
@@ -29,4 +31,18 @@ This is a documentation of an incident response report that was done in a contro
 
 ### Key Facts at a Glance
 
-# Preparation
+# 1. Preparation
+### 1.1 Environment and Tooling
+### 1.2 Roles and Access
+### 1.3 Readiness Checklist
+
+# 2. Detection and Analysis
+
+# 3. Containment, Eradication and Recovery
+
+# 4. Post-Incident Activity
+
+## Appendix A
+
+## Appendix B: References
+- 
