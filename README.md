@@ -6,9 +6,9 @@ This is a documentation of an incident response report that was done in a contro
 - [Incident Response Report](#Incident-Response-Report)
   - [Document Control](#Document-Control)
   - [Executive Summary](#Executive-Summary)
-1. [Preparation](#Preparation)
-  1.1. [Environment and Tooling](#Environment-and-Tooling)
-  1.2. [Roles and Access](#Roles-and-Access)
+- [Preparation](#Preparation)
+  - [Environment and Tooling](#Environment-and-Tooling)
+  - [Roles and Access](#Roles-and-Access)
 - [Section 3](#section-3)
 
 # Incident Response Report
