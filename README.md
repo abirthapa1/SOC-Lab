@@ -47,20 +47,35 @@ This is a documentation of an incident response report that was done in a contro
 | **Affected account(s)**     | test_user1 (local account)  |
 | **Detected / Closed**     | [2026-10-29 00:38 UTC-8] / [2026-10-30 1:00 UTC-8, after 24 h monitoring   |
 | **Analyst / Reviewer**     | Abir, SOC Analyst / Self-reviewed (lab)   |
-| **Framework**     | NIST SP 800-61; MITRE ATT&CK;  |
+| **Framework**     | NIST SP 800-61; MITRE ATT&CK  |
 
 ### Executive Summary
+On [29 Oct 2026 at 00:38 UTC-8], Microsoft Defender XDR raised an incident after detecting repeated PowerShell script execution on the endpoint test-Vm following a successful logon by the local account "test_user1". The commands collected network configuration details and tested which outbound ports were open, consistent with the discovery stage of an attack (MITRE ATT&CK T1016). The activity came from an authorized lab simulation but was handled as a real credential compromise. No sensitive data was accessed and no other assets were affected; the only change was one new text file listing the open ports. The root cause was that valid credentials could be used to log on and run PowerShell unchallenged, because the account had a weak password and no logon restrictions. Response actions were to reset the password, remove the generated file, and block the source address in the network security group, after which the endpoint was monitored for [duration] with no further suspicious activity and declared clean.
 
 ### Key Facts at a Glance
-
+| **Time to Detect**| **Time to Contain**| **Time to Recover**| **Assets affected**| **Data Impact**|
+|:-------- |:-------- |:-------- |:-------- |:-------- |
+| [12 mins] | [23 mins] | [76 mins] | 1 endpoint, 1 account | None identified |
 # Preparation
 ### Environment and Tooling
 ### Roles and Access
 ### Readiness Checklist
 
 # Detection and Analysis
+### Environment and Tooling
+### Environment and Tooling
+### Environment and Tooling
+### Environment and Tooling
+### Environment and Tooling
+### Environment and Tooling
+### Environment and Tooling
+### Environment and Tooling
 
 # Containment, Eradication and Recovery
+### Environment and Tooling
+### Environment and Tooling
+### Environment and Tooling
+### Environment and Tooling
 
 # Post-Incident Activity
 ### Root Cause
@@ -73,5 +88,5 @@ This is a documentation of an incident response report that was done in a contro
 
 ## Appendix B: References
 - NIST SP 800-61
-- MITRE ATT&CK Enterprise Matrix: T1016
+- MITRE ATT&CK Enterprise Matrix: T1016, T1059.001
 - Microsoft Learn: Defender XDR incident response and advanced hunting.
