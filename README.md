@@ -56,37 +56,80 @@ On [29 Oct 2026 at 00:38 UTC-8], Microsoft Defender XDR raised an incident after
 | **Time to Detect**| **Time to Contain**| **Time to Recover**| **Assets affected**| **Data Impact**|
 |:-------- |:-------- |:-------- |:-------- |:-------- |
 | [12 mins] | [23 mins] | [76 mins] | 1 endpoint, 1 account | None identified |
+
 # Preparation
+This section records the controls and readiness in place before the incident, which determines how quickly it can be detected and handled.
+
 ### Environment and Tooling
+| **Component**| **Configuration**| **Purpose**|
+|:-------- |:-------- |:-------- |
+| Microsoft Defender XDR | Microsoft 365 E5 trial tenant, incidents and alerts enabled | Unified detection, investigation and response|
+| Defender for Endpoint | test-Vm on-boarded via local script, sensor reporting | Endpoint telemetry, device isolation, Live response |
+| Microsoft Sentinel | Log Analytics workspace with Defender XDR and Entra ID connectors | SIEM correlation, long-term log retention |
+| Microsoft Entra ID | Diagnostic settings, send sign-in and audit logs to Sentinel | Identity telemetry |
+| Notifications | Defender email notification rule for Medium+ incidents | Analyst alerting |
+
 ### Roles and Access
+| **Role**| **Person/Account**| **Responsibility**|
+|:-------- |:-------- |:-------- |
+| Incident Handler| Jean Arc (Security Administrator) | Triage, investigate and contain|
+| Tenant Owner | Global Admin Account | Tenant level changes only, not used for daily work |
+| System Owner | Abir | Approves containment of the lab VM |
+| Azure account | azureuser | Used to login to test-Vm |
+| Local account | test_user1 | Used to login to test-VM as a local account |
+
 ### Readiness Checklist
+| **Control**| **Status**| **Notes**|
+|:-------- |:-------- |:-------- |
+| Endpoint onboarded and reporting | Yes | Device visible in Assets > Devices |
+| Sign-in and device logs reaching Sentinel | Yes | Verified with SigninLogs and DeviceLogOnEvents queries |
+| Alert notifications tested | Yes | Test alert delivered by email |
+| Custom detection for repeated | Yes (need to redo) | Identity telemetry |
+| Account lockout policy | Yes (need to redo) | Analyst alerting |
+| RDP restricted to trusted IP in the NSG | Partial | Open to a wide range, narrowed after this incident |
+| Incident response procedure documented | Yes | This report follows NIST SP 800-61 |
 
 # Detection and Analysis
-### Environment and Tooling
-### Environment and Tooling
-### Environment and Tooling
-### Environment and Tooling
-### Environment and Tooling
-### Environment and Tooling
-### Environment and Tooling
-### Environment and Tooling
+### Detection
+
+### Initial Triage and Prioritization
+
+### Investigation Timeline (UTC-8)
+### Evidence and Queries
+
+### Scope and Impact
+
+### MITRE ATT&CK Mapping
+
+### Indicators of Compromise
+
+### Verdict
+True positive (simulated). The detection correctly identified a bunch of commands and scripts being executed on PowerShell with a known credential. The source was an authorized lab test, so no real compromise occurred. The response was still carried out as if the activity were real.
 
 # Containment, Eradication and Recovery
-### Environment and Tooling
-### Environment and Tooling
-### Environment and Tooling
-### Environment and Tooling
+### Containment
+
+### Eradication
+
+### Recovery
+
+### Validation
 
 # Post-Incident Activity
 ### Root Cause
+
 ### What Went Well and What Did Not
+
 ### Lessons Learned and Recommendations
+
 ### Metrics
-### Closure
+
+### Closure (rewrite)
+The incident was closed in Defender as True positive with a comment summarizing the findings and a link to this report. Recommendations 4 and 5 are tracked as follow-up tasks.
 
 ## Appendix A
 
 ## Appendix B: References
-- NIST SP 800-61
-- MITRE ATT&CK Enterprise Matrix: T1016, T1059.001
+- NIST SP 800-61 Rev.2, Computer Security Incident Handling Guide (four-phase lifecycle used here).
+- MITRE ATT&CK Enterprise Matrix: T1016, T1059, T1059.001
 - Microsoft Learn: Defender XDR incident response and advanced hunting.
