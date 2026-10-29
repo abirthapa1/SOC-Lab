@@ -3,6 +3,12 @@
 # Description 
 This is a documentation of an incident response report that was done in a controlled environment to replicate a real life scenario incident. Made a homelab where I used Microsoft Defender XDR for alerts and incidents report in a controlled environment for my Azure VMs. I used Atomic red teams tests and Eicar test file to simulate an in real life security threat which would allow me to know how to prepare for the threat, detection of the threat, analysis of the threat if it's a false alarm or a legit threat, contain the threat, eradication of the threat and recovery of the system to it's normal state. And then the Post Incident Activity by documenting the whole process
 
+## Table of Contents
+- [Section 1](#section-1)
+- [Section 2](#section-2)
+  - [Sub-section 2a](#sub-section-2a)
+- [Section 3](#section-3)
+
 # Incident Response Report
 
 ### Document control 
