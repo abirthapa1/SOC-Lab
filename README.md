@@ -8,16 +8,16 @@ This is a documentation of an incident response report that was done in a contro
 ### Document control 
 | Incident ID | 2 |
 |:-------- |:-------- |
-| Title     | Compromised account conducting hands-on-keyboard attack  |
-| Status     | Closed |
-| Severity    | High (Defender Severity: High; Adjusted after triage, see 2.2)   |
-| Classification    | True positive - simulated activity   |
-| Detection source    | EDR   |
-| Affected asset     | test-Vm : Windows 11 Enterpise VM, onboarded to Defender for Endpoint   |
-| Affected account(s)     | test_user1 (local account)  |
-| Detected / Closed     | [2026-10-29 00:38 UTC-8] / [2026-10-30 1:00 UTC-8, after 24 h monitoring   |
-| Analyst / Reviewer     | Abir, SOC Analyst / Self-reviewed (lab)   |
-| Framework     | NIST SP 800-61; MITRE ATT&CK;  |
+| **Title**     | Compromised account conducting hands-on-keyboard attack  |
+| **Status**     | Closed |
+| **Severity**    | High (Defender Severity: High; Adjusted after triage, see 2.2)   |
+| **Classification**    | True positive - simulated activity   |
+| **Detection source**    | EDR   |
+| **Affected asset**     | test-Vm : Windows 11 Enterpise VM, onboarded to Defender for Endpoint   |
+| **Affected account(s)**     | test_user1 (local account)  |
+| **Detected / Closed**     | [2026-10-29 00:38 UTC-8] / [2026-10-30 1:00 UTC-8, after 24 h monitoring   |
+| **Analyst / Reviewer**     | Abir, SOC Analyst / Self-reviewed (lab)   |
+| **Framework**     | NIST SP 800-61; MITRE ATT&CK;  |
 
 ### Executive Summary
 
