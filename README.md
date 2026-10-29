@@ -9,9 +9,27 @@ This is a documentation of an incident response report that was done in a contro
 - [Preparation](#Preparation)
   - [Environment and Tooling](#Environment-and-Tooling)
   - [Roles and Access](#Roles-and-Access)
+  - [Readiness Checklist](#Readiness-Checklist)
 - [Detection and Analysis](#Detection-and-Analysis)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
 - [Containment, Eradication and Recovery](#Containment-Eradication-and-Recovery)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
 - [Post-Incident Activity](#Post-Incident-Activity)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
+  - [Root Cause](#Root-Cause)
 - [Appendix A](#Appendix-A)
 - [Appendix B: References](#Appendix-B-References)
 
@@ -45,6 +63,11 @@ This is a documentation of an incident response report that was done in a contro
 # Containment, Eradication and Recovery
 
 # Post-Incident Activity
+### Root Cause
+### What Went Well and What Did Not
+### Lessons Learned and Recommendations
+### Metrics
+### Closure
 
 ## Appendix A
 
