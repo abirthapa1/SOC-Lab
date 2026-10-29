@@ -9,7 +9,11 @@ This is a documentation of an incident response report that was done in a contro
 - [Preparation](#Preparation)
   - [Environment and Tooling](#Environment-and-Tooling)
   - [Roles and Access](#Roles-and-Access)
-- [Section 3](#section-3)
+- [Detection and Analysis](#Detection-and-Analysis)
+- [Containment, Eradication and Recovery](#Containment-Eradication-and-Recovery)
+- [Post-Incident Activity](#Post-Incident-Activity)
+- [Appendix A](#Appendix-A)
+- [Appendix B: References](#Appendix-B-References)
 
 # Incident Response Report
 
@@ -36,13 +40,15 @@ This is a documentation of an incident response report that was done in a contro
 ### Roles and Access
 ### Readiness Checklist
 
-# 2. Detection and Analysis
+# Detection and Analysis
 
-# 3. Containment, Eradication and Recovery
+# Containment, Eradication and Recovery
 
-# 4. Post-Incident Activity
+# Post-Incident Activity
 
 ## Appendix A
 
 ## Appendix B: References
-- 
+- NIST SP 800-61
+- MITRE ATT&CK Enterprise Matrix: T1016
+- Microsoft Learn: Defender XDR incident response and advanced hunting.
