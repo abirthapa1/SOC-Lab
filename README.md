@@ -7,8 +7,8 @@ This is a documentation of an incident response report that was done in a contro
   - [Document Control](#Document-Control)
   - [Executive Summary](#Executive-Summary)
 1. [Preparation](#Preparation)
-  1.1 [Environment and Tooling](#Environment-and-Tooling)
-  1.2
+  1.1. [Environment and Tooling](#Environment-and-Tooling)
+  1.2. [Roles and Access](#Roles-and-Access)
 - [Section 3](#section-3)
 
 # Incident Response Report
@@ -32,9 +32,9 @@ This is a documentation of an incident response report that was done in a contro
 ### Key Facts at a Glance
 
 # 1. Preparation
-### 1.1 Environment and Tooling
-### 1.2 Roles and Access
-### 1.3 Readiness Checklist
+### 1.1. Environment and Tooling
+### 1.2. Roles and Access
+### 1.3. Readiness Checklist
 
 # 2. Detection and Analysis
 
