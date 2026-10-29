@@ -91,6 +91,15 @@ This section records the controls and readiness in place before the incident, wh
 
 # Detection and Analysis
 ### Detection
+The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident [Incident ID 2]. An email notification reached the analyst within [4] minutes of the incident being created.
+Image 1: Incident Page
+<img width="1433" height="591" alt="Incident-page" src="https://github.com/user-attachments/assets/9830f34b-f8be-422c-9c96-da920034ea1d" />
+
+Image 2: Alert Page
+<img width="1471" height="328" alt="image" src="https://github.com/user-attachments/assets/118abb6f-76bc-4778-bf5b-ef17600c39fd" />
+
+Image 3: Timeline
+<img width="1657" height="357" alt="image" src="https://github.com/user-attachments/assets/d3c27676-bf52-4105-9de1-6c077fed1ef8" />
 
 ### Initial Triage and Prioritization
 
