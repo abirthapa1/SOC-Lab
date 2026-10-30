@@ -1,6 +1,6 @@
 # SOC-Lab
 ### Description 
-This is a documentation of an incident response report that was done in a controlled environment to replicate a real life scenario incident. Made a homelab where I used Microsoft Defender XDR for alerts and incidents report in a controlled environment for my Azure VMs. I used Atomic red teams tests and Eicar test file to simulate an in real life security threat which would allow me to know how to prepare for the threat, detection of the threat, analysis of the threat if it's a false alarm or a legit threat, contain the threat, eradication of the threat and recovery of the system to it's normal state. And then the Post Incident Activity by documenting the whole process
+This is a documentation of an incident response report that was done in a controlled environment to replicate a real life scenario incident. Made a homelab where I used Microsoft Defender XDR for alerts and incidents report in a controlled environment for my Azure VMs. I used Atomic red teams tests to simulate an in real life security threat which would allow me to know how to prepare for the threat, detection of the threat, analysis of the threat if it's a false alarm or a legit threat, contain the threat, eradication of the threat and recovery of the system to it's normal state. And then the Post Incident Activity by documenting the whole process
 
 # Table of Contents
 - [Incident Response Report](#Incident-Response-Report)
@@ -40,7 +40,7 @@ This is a documentation of an incident response report that was done in a contro
 |:-------- |:-------- |
 | **Title**     | Compromised account conducting hands-on-keyboard attack  |
 | **Status**     | Closed |
-| **Severity**    | High (Defender Severity: High; Adjusted after triage, see 2.2)   |
+| **Severity**    | High (Defender Severity: High; Adjusted after triage)   |
 | **Classification**    | True positive - simulated activity   |
 | **Detection source**    | EDR   |
 | **Affected asset**     | test-Vm : Windows 11 Enterpise VM, onboarded to Defender for Endpoint   |
@@ -50,7 +50,7 @@ This is a documentation of an incident response report that was done in a contro
 | **Framework**     | NIST SP 800-61; MITRE ATT&CK  |
 
 ### Executive Summary
-On [29 Oct 2026 at 00:38 UTC-8], Microsoft Defender XDR raised an incident after detecting repeated PowerShell script execution on the endpoint test-Vm following a successful logon by the local account "test_user1". The commands collected network configuration details and tested which outbound ports were open, consistent with the discovery stage of an attack (MITRE ATT&CK T1016). The activity came from an authorized lab simulation but was handled as a real credential compromise. No sensitive data was accessed and no other assets were affected; the only change was one new text file listing the open ports. The root cause was that valid credentials could be used to log on and run PowerShell unchallenged, because the account had a weak password and no logon restrictions. Response actions were to reset the password, remove the generated file, and block the source address in the network security group, after which the endpoint was monitored for [duration] with no further suspicious activity and declared clean.
+On [29 Oct 2026 at 00:38 UTC-8], Microsoft Defender XDR raised an incident after detecting repeated PowerShell script execution on the endpoint test-Vm following a successful logon by the local account "test_user1". The commands collected network configuration details and tested which outbound ports were open, consistent with the discovery stage of an attack (MITRE ATT&CK T1016, T1059). The activity came from an authorized lab simulation but was handled as a real credential compromise. No sensitive data was accessed and no other assets were affected; the only change was one new text file listing the open ports. The root cause was that valid credentials could be used to log on and run PowerShell unchallenged, because the account had a weak password and no logon restrictions. Response actions were to reset the password, remove the generated file, and block the source address in the network security group, after which the endpoint was monitored for 24 hours with no further suspicious activity and declared clean.
 
 ### Key Facts at a Glance
 | **Time to Detect**| **Time to Contain**| **Time to Recover**| **Assets affected**| **Data Impact**|
@@ -178,8 +178,14 @@ Short-term containment limited the attacker's ability to act while evidence was 
 
 # Post-Incident Activity
 ### Root Cause
+The root cause was weak access controls on the endpoint test-Vm. The local account test_user1 could be used for a remote logon with only username and password, with no MFA, no account lockout and no restrictions on which IP addresses could connect. Because it is a local account, it also fell outside the Entra ID Protection and Conditional Access, so nothing challenged or flagged the sign-in. Once logged on, the account could run PowerShell freely with the execution policy bypassed, which allowed the Atomic Red Team discovery tests (T1016, T1059) to run unrestricted. Detection depended on behavior-based rules which took a little bit of time to showup as an alert in the Defender Portal.
 
 ### What Went Well and What Did Not
+| **Went Well**| **Needs improvement** |
+|:-------- |:-------- |
+| Defender caught the activity and tagged it with MITRE techniques (T1016, T1059) and a "Remote execution" label which made the source of the session easy to see| A local account with valid credentials was enough to log on remotely and run PowerShell with no challenge. MFA, Entra ID and conditional access needs to be in place. |
+| Device timeline and script block logs gave a clear record of the exact commands that was ran on PowerShell | ``powershell.exe`` and ``cmd.exe`` being MS-signed made it harder to detect and depended on behavior and command lines.  |
+| Isolation preserved Defender connectivity, so evidence could be collected |   |
 
 
 
@@ -188,19 +194,19 @@ Short-term containment limited the attacker's ability to act while evidence was 
 |:-------- |:-------- |:-------- | :------- | :------- |
 | 1 | Move to Entra-joined accounts with MFA | High | System Owner  | Done |
 | 2 | Add detections for ``powershell -exec bypass`` and PowerShell launched from a remote session |  High | Security Admin | Done|
-| 3 | Keep PowerShell script block logging enabled, and consider Sysmon for process termination events | Medium |  System Owner | Done |
+| 3 | Keep PowerShell script block logging enabled, and consider Sysmon for process termination events | Medium |  System Owner | Planned |
 | 4 | Write a playbook for this scenario: isolate the device, disable the account, block the source and collect the investigation package | Low |  Security Admin  | Planned |
 
 ### Metrics
 | **Metric**| **Value** | **Definition** |
 |:-------- |:-------- |:-------- |
-| 1 | Move to Entra-joined accounts with MFA | High | System Owner  | Done |
-| 2 | Add detections for ``powershell -exec bypass`` and PowerShell launched from a remote session |  High | Security Admin | Done|
-| 3 | Keep PowerShell script block logging enabled, and consider Sysmon for process termination events | Medium |  System Owner | Done |
-| 4 | Write a playbook for this scenario: isolate the device, disable the account, block the source and collect the investigation package | Low |  Security Admin  | Planned |
+| Mean Time to Detect (MTTD) | 12 mins | Suspicious commands run on PowerShell  |
+| Mean Time to Respond (MTTR) | 23 mins |  Incident Creation to containment start |
+| Mean Time to Recover | 76 mins | Medium | Incident Creation to device restored |
+| Alerts / Incidents involved | 2 alerts, 1 incident | Correlated in Defender XDR |
 
 ### Closure (rewrite)
-The incident was closed in Defender as True positive with a comment summarizing the findings and a link to this report. Recommendations 4 and 5 are tracked as follow-up tasks.
+The incident was closed in Defender as **True positive** with a comment summarizing the findings and a link to this report. Recommendations 3 and 4 are tracked as follow-up tasks.
 
 ## Appendix A: Evidence Checklist
 
