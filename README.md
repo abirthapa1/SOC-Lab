@@ -185,7 +185,7 @@ Short-term containment limited the attacker's ability to act while evidence was 
 
 ### Lessons Learned and Recommendations
 | **#**| **Recommendation**| **Priority**| **Owner** | **Status** |
-|:-------- |:-------- |:-------- | :------ |
+|:-------- |:-------- |:-------- | :------- | :------- |
 | 1 | Move to Entra-joined accounts with MFA | High | System Owner  | Done |
 | 2 | Add detections for ``powershell -exec bypass`` and PowerShell launched from a remote session |  High | Security Admin | Done|
 | 3 | Keep PowerShell script block logging enabled, and consider Sysmon for process termination events | Medium |  System Owner | Done |
