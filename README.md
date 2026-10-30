@@ -104,9 +104,36 @@ The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts one for Co
 
 
 ### Initial Triage and Prioritization
+- **Asset Criticality**: Medium (No production data), but internet-exposed through RDP
+- **Pattern**: [49] powershell.exe scripts ran in a span of 10 minutes, from a local account with a creation of open-ports.txt.
+- **Severity decision**: raised it to High, after the user started running more PowerShell scripts with the intention of knowing the network configuration of the system and saving the all the open ports in a text file.
 
 ### Investigation Timeline (UTC-8)
+| **Time**| **Event**| **Source**|
+|:-------- |:-------- |:-------- |
+| 2026-10-28 23:36:37 | Interactive logon for test_user1: userinit.exe (PID 6572) started, which sets up the user session. | Device timeline: process creation |
+| 2026-10-28 23:36:38 | explorer.exe (PID 6608) started in the session. The session was opened remotely from cachyos-x8664 / 192.168.0.103 (remote logon). | Device timeline: process creation |
+| 2026-10-28 23:41:47 | powershell.exe (PID 11980) launched interactively by test_user1. | Device timeline: process creation |
+| 2026-10-28 23:42:11 | powershell.exe -exec bypass (PID 1936) launched, bypassing the PowerShell execution policy. | Device timeline: process creation |
+| 2026-10-29 00:24:41 to 00:30:42 | whoami.exe and HOSTNAME.EXE ran each time Invoke-AtomicTest was called. This is likely the framework recording the executing user and host, not separate manual discovery. | Device timeline: process creation |
+| 2026-10-29 00:30:42 | Invoke-AtomicTest T1566.002 executed. It created a child powershell.exe (PID 3900) running an inline script. Defender mapped it to T1059.001 (PowerShell) and T1620 (Reflective Code Loading). | PowerShell script block log and Defender alert |
+| 2026-10-29 00:30:43 | Inline script behavior: defines a keybd_event call from user32.dll, simulates Win+R to open the Run dialog, then types cmd /c powershell -ec <Base64>. The Base64 decodes to calc.exe, so the end result is a calculator launched through an encoded PowerShell command. | PowerShell script block log |
+| 2026-10-29 00:30:43 | powershell.exe loaded a .NET assembly in memory. This is likely the Add-Type compile of the helper class, and it contributed to the T1620 tag. | Defender alert / device timeline |
+| 2026-10-29 00:30:46 | Defender XDR raised the incident. | Defender XDR incident |
+| 2026-10-29 00:38:02 | The T1016 PowerShell script (PID 1040) that reads top-128.txt and sets up open-ports.txt on the Desktop. | 	Device timeline: process creation |
+| 2026-10-29 00:38:18 | cmd.exe running qakbot.bat (PID 9540) from the same T1016 folder. | 	Device timeline: process creation |
+| 2026-10-29 00:38:18 | Defender XDR raised the incident. | 	Defender XDR incident |
 ### Evidence and Queries
+
+``
+DeviceProcessEvents
+| where DeviceName =~ "test-Vm" and Timestamp > ago(24h)
+| where ProcessCommandLine has_any ("open-ports.txt")
+| project Timestamp, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName
+``
+##### Image : Output for the above KQL query
+<img width="1160" height="875" alt="image" src="https://github.com/user-attachments/assets/ac9048d0-5965-42ec-815a-c47789dd21cb" />
+
 
 ### Scope and Impact
 
