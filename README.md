@@ -123,6 +123,8 @@ The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts one for Co
 | 2026-10-29 00:38:02 | The T1016 PowerShell script (PID 1040) that reads top-128.txt and sets up open-ports.txt on the Desktop. | 	Device timeline: process creation |
 | 2026-10-29 00:38:18 | cmd.exe running qakbot.bat (PID 9540) from the same T1016 folder. | 	Device timeline: process creation |
 | 2026-10-29 00:38:18 | Defender XDR raised the incident. | 	Defender XDR incident |
+
+
 ### Evidence and Queries
 
 ``
@@ -146,18 +148,44 @@ True positive (simulated). The detection correctly identified a bunch of command
 
 # Containment, Eradication and Recovery
 ### Containment
+Short-term containment limited the attacker's ability to act while evidence was preserved.
+| **Time**| **Action**| **By**| **Result** |
+|:-------- |:-------- |:-------- | :------ |
+| 2026-10-29 00:39 | Isolated test-Vm from the network using Defender 'Isolate Device' | Jean Arc (Security Admin) |  Device isolated, sensor still reporting |
+| 2026-10-29 00:42 | Removed the account test_user1 in local users (Entra account not involved) | Jean Arc (Security Admin) |  Account removed |
+| 2026-10-29 00:45 | Quarantined the open-ports.txt using Live response | Jean Arc (Security Admin) |  Quarantined the text file  |
+| 2026-10-29 00:48 | Collected investigation package from the device for evidence | Jean Arc (Security Admin) |  Package saved to the case folder |
+
 
 ### Eradication
+- Removed the compromised local account test_user1.
+- Quarantined the open-ports.txt file.
+- Ran a full Microsoft Defender Antivirus scan on test-Vm. Result: no threats found.
+- Reviewed local users, services, scheduled tasks and startup items for persistence. Result: nothing new.
+- Confirmed no other accounts showed any spikes in execution of multiple PowerShell scripts from the same IP (hunting query across all devices).
 
 ### Recovery
+- Released the device from isolation at [01:30] after the antivirus scan and checks were clean.
+- Monitored the device for 24 hours: no repeat alerts or new failed-logon spikes.
 
 ### Validation
+| **Check**| **Result** |
+|:-------- |:-------- |
+| Device reporting to Defender and healthy | Pass |
+| No remaining alerts on the device |  Pass |
+| Not being able to login from the local account test_user1 |  Pass |
+| Incident closed with classification and comments |  Pass (True positive, classification noted as a lab test) |
 
 # Post-Incident Activity
 ### Root Cause
 
 ### What Went Well and What Did Not
-
+| **#**| **Action**| **By**| **Result** |
+|:-------- |:-------- |:-------- | :------ |
+| 2026-10-29 00:39 | Isolated test-Vm from the network using Defender 'Isolate Device' | Jean Arc (Security Admin) |  Device isolated, sensor still reporting |
+| 2026-10-29 00:42 | Removed the account test_user1 in local users (Entra account not involved) | Jean Arc (Security Admin) |  Account removed |
+| 2026-10-29 00:45 | Quarantined the open-ports.txt using Live response | Jean Arc (Security Admin) |  Quarantined the text file  |
+| 2026-10-29 00:48 | Collected investigation package from the device for evidence | Jean Arc (Security Admin) |  Package saved to the case folder |
 ### Lessons Learned and Recommendations
 
 ### Metrics
