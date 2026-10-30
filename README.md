@@ -11,26 +11,26 @@ This is a documentation of an incident response report that was done in a contro
   - [Roles and Access](#Roles-and-Access)
   - [Readiness Checklist](#Readiness-Checklist)
 - [Detection and Analysis](#Detection-and-Analysis)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
+  - [Detection](#Detection)
+  - [Inital Triage and Prioritization](#Initial-Triage-and-Prioritization)
+  - [Investigation Timeline (UTC-8)](#Investigation-Timeline)
+  - [Evidence and Queries](#Evidence-and-Queries)
+  - [Scope and Impact](#Scope-and-Impact)
+  - [MITRE ATT&CK Mapping](#MITRE-ATT&CK-Mapping)
+  - [Indicators of Compromise](#Indicators-of-Compromise)
+  - [Verdict](#Verdict)
 - [Containment, Eradication and Recovery](#Containment-Eradication-and-Recovery)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
+  - [Containment](#Containment)
+  - [Eradication](#Eradication)
+  - [Recovery](#Recovery)
+  - [Validation](#Validation)
 - [Post-Incident Activity](#Post-Incident-Activity)
   - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-  - [Root Cause](#Root-Cause)
-- [Appendix A](#Appendix-A)
+  - [What Went Well and What Did Not](#What-Went-Well-and-What-Did-Not)
+  - [Lessons Learned and Recommendations](#Lessons-Learned-and-Recommendation)
+  - [Metrics](#Metrics)
+  - [Closure](#Closure)
+- [Appendix A: Evidence Checklist](#Appendix-A-Evidence-Checklist)
 - [Appendix B: References](#Appendix-B-References)
 
 # Incident Response Report
@@ -165,7 +165,7 @@ True positive (simulated). The detection correctly identified a bunch of command
 ### Closure (rewrite)
 The incident was closed in Defender as True positive with a comment summarizing the findings and a link to this report. Recommendations 4 and 5 are tracked as follow-up tasks.
 
-## Appendix A
+## Appendix A: Evidence Checklist
 
 ## Appendix B: References
 - NIST SP 800-61 Rev.2, Computer Security Incident Handling Guide (four-phase lifecycle used here).
