@@ -180,15 +180,24 @@ Short-term containment limited the attacker's ability to act while evidence was 
 ### Root Cause
 
 ### What Went Well and What Did Not
-| **#**| **Action**| **By**| **Result** |
-|:-------- |:-------- |:-------- | :------ |
-| 2026-10-29 00:39 | Isolated test-Vm from the network using Defender 'Isolate Device' | Jean Arc (Security Admin) |  Device isolated, sensor still reporting |
-| 2026-10-29 00:42 | Removed the account test_user1 in local users (Entra account not involved) | Jean Arc (Security Admin) |  Account removed |
-| 2026-10-29 00:45 | Quarantined the open-ports.txt using Live response | Jean Arc (Security Admin) |  Quarantined the text file  |
-| 2026-10-29 00:48 | Collected investigation package from the device for evidence | Jean Arc (Security Admin) |  Package saved to the case folder |
+
+
+
 ### Lessons Learned and Recommendations
+| **#**| **Recommendation**| **Priority**| **Owner** | **Status** |
+|:-------- |:-------- |:-------- | :------ |
+| 1 | Move to Entra-joined accounts with MFA | High | System Owner  | Done |
+| 2 | Add detections for ``powershell -exec bypass`` and PowerShell launched from a remote session |  High | Security Admin | Done|
+| 3 | Keep PowerShell script block logging enabled, and consider Sysmon for process termination events | Medium |  System Owner | Done |
+| 4 | Write a playbook for this scenario: isolate the device, disable the account, block the source and collect the investigation package | Low |  Security Admin  | Planned |
 
 ### Metrics
+| **Metric**| **Value** | **Definition** |
+|:-------- |:-------- |:-------- |
+| 1 | Move to Entra-joined accounts with MFA | High | System Owner  | Done |
+| 2 | Add detections for ``powershell -exec bypass`` and PowerShell launched from a remote session |  High | Security Admin | Done|
+| 3 | Keep PowerShell script block logging enabled, and consider Sysmon for process termination events | Medium |  System Owner | Done |
+| 4 | Write a playbook for this scenario: isolate the device, disable the account, block the source and collect the investigation package | Low |  Security Admin  | Planned |
 
 ### Closure (rewrite)
 The incident was closed in Defender as True positive with a comment summarizing the findings and a link to this report. Recommendations 4 and 5 are tracked as follow-up tasks.
@@ -199,3 +208,4 @@ The incident was closed in Defender as True positive with a comment summarizing 
 - NIST SP 800-61 Rev.2, Computer Security Incident Handling Guide (four-phase lifecycle used here).
 - MITRE ATT&CK Enterprise Matrix: T1016, T1059, T1059.001
 - Microsoft Learn: Defender XDR incident response and advanced hunting.
+- Manage your live response library directly in Microsoft Defender https://www.modernsecurity.nl/live-response-library-in-microsoft-defender/
