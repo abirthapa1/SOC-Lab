@@ -27,7 +27,7 @@ This is a documentation of an incident response report that was done in a contro
 - [Post-Incident Activity](#Post-Incident-Activity)
   - [Root Cause](#Root-Cause)
   - [What Went Well and What Did Not](#What-Went-Well-and-What-Did-Not)
-  - [Lessons Learned and Recommendations](#Lessons-Learned-and-Recommendation)
+  - [Lessons Learned and Recommendations](#Lessons-Learned-and-Recommendations)
   - [Metrics](#Metrics)
   - [Closure](#Closure)
 - [Appendix A: Evidence Checklist](#Appendix-A-Evidence-Checklist)
