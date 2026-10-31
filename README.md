@@ -138,10 +138,34 @@ DeviceProcessEvents
 
 
 ### Scope and Impact
+| **Question**| **Finding** | 
+|:-------- |:-------- |
+| How many systems were affected? | One: test-Vm. No evidence of other devices in the timeline. |
+| What accounts were involved?  | One: test_user1 (local account). No Entra or domain accounts involved. |
+| What was the privilege level? | No privilege escalation observed |
+| Was data accessed or exfiltrated? | Nothing sensitive. Network configuration was shown but no outbound network activity.  |
+| Was data modified? | Minor. ``open-ports.txt`` was setup on the Desktop. |
+| Was there any lateral movement? | None observed |
+| Was persistence established ? | None found. Check for new accounts, scheduled tasks, services and startup items. |
+| Was data accessed? | Nothing sensitive |
+
 
 ### MITRE ATT&CK Mapping
+| **Tactic**| **Technique** | **Observed evidence** |
+|:-------- |:-------- |:-------- |
+| Initial Access | T1078.003 Valid Accounts: Local Accounts | Successful remote logon as ``test-Vm\test_user1``  |
+| Execution | T1059.001 PowerShell |  Interactive PowerShell, ``-exec bypass``, inline scripts (Defender tag) |
+| Discovery | T1016 System Network Configuration Discovery | open-ports script and ``qakbot.bat`` |
 
 ### Indicators of Compromise
+| **Type**| **Indicator** |
+|:-------- |:-------- |
+| Ip address | 192.168.0.103 |
+| Hostname | cachyos-x8664 |
+| Account | test_user1 |
+| Device | test-Vm |
+| Command Line | ``powershell.exe -exec bypass`` |
+| File path | ``%USERPROFILE%\Desktop\open-ports.txt`` |
 
 ### Verdict
 True positive (simulated). The detection correctly identified a bunch of commands and scripts being executed on PowerShell with a known credential. The source was an authorized lab test, so no real compromise occurred. The response was still carried out as if the activity were real.
@@ -211,7 +235,11 @@ The incident was closed in Defender as **True positive** with a comment summariz
 ## Appendix A: Evidence Checklist
 
 ## Appendix B: References
-- NIST SP 800-61 Rev.2, Computer Security Incident Handling Guide (four-phase lifecycle used here).
-- MITRE ATT&CK Enterprise Matrix: T1016, T1059, T1059.001
+- NIST SP 800-61 Rev.2, Computer Security Incident Handling Guide (four-phase lifecycle used here). https://doi.org/10.6028/NIST.SP.800-61r2 
+- MITRE ATT&CK Enterprise Matrix:
+  -  T1016 https://attack.mitre.org/techniques/T1016/
+  -  T1059 https://attack.mitre.org/techniques/T1059/
+  -  T1059.001 https://attack.mitre.org/techniques/T1059/001/
+  -  T1078.003 https://attack.mitre.org/techniques/T1078/003/
 - Microsoft Learn: Defender XDR incident response and advanced hunting.
-- Manage your live response library directly in Microsoft Defender https://www.modernsecurity.nl/live-response-library-in-microsoft-defender/
+- Manage your live response library directly in Microsoft Defender. https://www.modernsecurity.nl/live-response-library-in-microsoft-defender/
