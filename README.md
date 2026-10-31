@@ -154,7 +154,34 @@ DeviceProcessEvents
 ```
 - Brought the device into isolation. [[Image 7](#Image-7)]
 - Remediated the text file(open-ports.txt). [[Image 8](#Image-8)]
-- Uploaded a powershell script to remove the local account from the device. [[Image 9](#Image-9)]
+- Uploaded a powershell script (remove_localUser.ps1) to remove the local account from the device. [[Image 9](#Image-9)]
+```
+//remove_localUser.ps1
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$Username
+)
+
+# Check that the account exists
+$user = Get-LocalUser -Name $Username -ErrorAction SilentlyContinue
+
+if ($null -eq $user) {
+    Write-Output "User $Username does not exist."
+    exit 1
+}
+
+# Prevent accidental deletion of the built-in Administrator
+if ($user.SID.Value -match '-500$') {
+    Write-Output "Refusing to delete the built-in Administrator."
+    exit 1
+}
+
+# Delete the local account
+Remove-LocalUser -Name $Username -Confirm:$false
+
+Write-Output "Successfully deleted local user: $Username"
+
+```
 
 
 ### Scope and Impact
@@ -210,7 +237,7 @@ Short-term containment limited the attacker's ability to act while evidence was 
 - A full device wipe was done as well.
 
 ### Recovery
-- A fresh install was performed and onboard-ed the new to VM using endpoint.
+- A fresh install was performed and onboard-ed the new VM using endpoint.
 - Monitored the device for 24 hours: no repeat alerts or new failed-logon spikes.
 
 ### Validation
