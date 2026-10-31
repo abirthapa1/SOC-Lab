@@ -1,6 +1,6 @@
 # SOC-Lab
 ### Description 
-This is a documentation of an incident response report that was done in a controlled environment to replicate a real life scenario incident. Made a homelab where I used Microsoft Defender XDR for alerts and incidents report in a controlled environment for my Azure VMs. I used Atomic red teams tests to simulate an in real life security threat which would allow me to know how to prepare for the threat, detection of the threat, analysis of the threat if it's a false alarm or a legit threat, contain the threat, eradication of the threat and recovery of the system to it's normal state. And then the Post Incident Activity by documenting the whole process
+This is a documentation of an incident response report that was done in a controlled environment to replicate a real life scenario incident. A homelab was built using Microsoft Defender XDR to monitor VMs, generate security alerts, investigate any escalated issues and report on these incidents. Atomic red teams tests were used to simulate a real world security threat, which supported the following follow up actions: how to prepare for the threat, detection of the threat, analysis of the threat if it's a false alarm or a legitimate threat, contain the threat, eradication of the threat and recovery of the system to it's normal state. A Post Incident Activity document was created to record the entre process, including findings, the response actions taken, and lessons learned.
 
 # Table of Contents
 - [Incident Response Report](#Incident-Response-Report)
@@ -29,7 +29,7 @@ This is a documentation of an incident response report that was done in a contro
   - [What Went Well and What Did Not](#What-Went-Well-and-What-Did-Not)
   - [Lessons Learned and Recommendations](#Lessons-Learned-and-Recommendations)
   - [Metrics](#Metrics)
-  - [Closure](#Closure)
+  - [Conclusion](#Conclusion)
 - [Appendix A: Evidence Checklist](#Appendix-A-Evidence-Checklist)
 - [Appendix B: References](#Appendix-B-References)
 
@@ -50,12 +50,12 @@ This is a documentation of an incident response report that was done in a contro
 | **Framework**     | NIST SP 800-61; MITRE ATT&CK  |
 
 ### Executive Summary
-On [29 Oct 2026 at 00:38 UTC-8], Microsoft Defender XDR raised an incident after detecting repeated PowerShell script execution on the endpoint test-Vm following a successful logon by the local account "test_user1". The commands collected network configuration details and tested which outbound ports were open, consistent with the discovery stage of an attack (MITRE ATT&CK T1016, T1059). The activity came from an authorized lab simulation but was handled as a real credential compromise. No sensitive data was accessed and no other assets were affected; the only change was one new text file listing the open ports. The root cause was that valid credentials could be used to log on and run PowerShell unchallenged, because the account had a weak password and no logon restrictions. Response actions were to reset the password, remove the generated file, and block the source address in the network security group, after which the endpoint was monitored for 24 hours with no further suspicious activity and declared clean.
+On 29 Oct 2026 at 00:38 UTC-8, Microsoft Defender XDR raised an incident after detecting repeated PowerShell script execution on the endpoint 'test-Vm' following a successful log on by the local account 'test_user1'. The commands collected network configuration details and tested which outbound ports were open. This is consistent with the discovery stage of an attack (MITRE ATT&CK T1016, T1059). The activity came from an authorized lab simulation, but was handled as a real credential compromise. No sensitive data was accessed and no other assets were affected; the only change was one new text file listing the open ports. The root cause was that valid credentials could be used to log on and run PowerShell unchallenged, however, the account had a weak password and no log on restrictions. Response actions were to reset the password, remove the generated file, and block the source address in the network security group, after which the endpoint was monitored for 24 hours with no further suspicious activity and declared clean.
 
 ### Key Facts at a Glance
 | **Time to Detect**| **Time to Contain**| **Time to Recover**| **Assets affected**| **Data Impact**|
 |:-------- |:-------- |:-------- |:-------- |:-------- |
-| [12 mins] | [23 mins] | [76 mins] | 1 endpoint, 1 account | None identified |
+| 12 mins | 23 mins | 48 hours | 1 endpoint, 1 account | None identified |
 
 # Preparation
 This section records the controls and readiness in place before the incident, which determines how quickly it can be detected and handled.
@@ -91,11 +91,11 @@ This section records the controls and readiness in place before the incident, wh
 
 # Detection and Analysis
 ### Detection
-The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts [[Image 1](#Image-1-Alert-page)] one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident [Incident ID 2].[[Image 2](#Image-2-incident-page)] An email notification reached the analyst within [4] minutes of the incident being created.
+The alert was created on 29 Oct 2026 at 00:38 UTC-8 with two alerts [[Image 1](#Image-1-Alert-page)] one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident 'Incident ID 2'.[[Image 2](#Image-2-incident-page)]. The analyst immediately picked on to the alert that was created and within seconds 
 
 ### Initial Triage and Prioritization
 - **Asset Criticality**: Medium (No production data), but internet-exposed through RDP
-- **Pattern**: [49] powershell.exe scripts ran in a span of 10 minutes, from a local account with a creation of open-ports.txt.
+- **Pattern**: '49' powershell.exe scripts ran in a span of 10 minutes, from a local account with a creation of open-ports.txt.
 - **Severity decision**: raised it to High, after the user started running more PowerShell scripts with the intention of knowing the network configuration of the system and saving the all the open ports in a text file.
 
 ### Investigation Timeline (UTC-8)
@@ -167,6 +167,7 @@ DeviceProcessEvents
 | Was data modified? | Minor. ``open-ports.txt`` was setup on the Desktop. |
 | Was there any lateral movement? | None observed |
 | Was persistence established ? | None found. Check for new accounts, scheduled tasks, services and startup items. |
+| Performed a threat hunt for any other compromised device? | None found. |
 
 
 ### MITRE ATT&CK Mapping
@@ -201,27 +202,28 @@ Short-term containment limited the attacker's ability to act while evidence was 
 
 
 ### Eradication
-- Removed the compromised local account test_user1.
+- Removed the compromised local account 'test_user1'.
 - Quarantined the open-ports.txt file.
-- Ran a full Microsoft Defender Antivirus scan on test-Vm. Result: no threats found.
+- Ran a full Microsoft Defender Antivirus scan on 'test-Vm'. Result: no threats found.
 - Reviewed local users, services, scheduled tasks and startup items for persistence. Result: nothing new.
 - Confirmed no other accounts showed any spikes in execution of multiple PowerShell scripts from the same IP (hunting query across all devices).
+- A full device wipe was done as well.
 
 ### Recovery
-- Released the device from isolation at [01:30] after the antivirus scan and checks were clean.
+- A fresh install was performed and onboard-ed the new to VM using endpoint.
 - Monitored the device for 24 hours: no repeat alerts or new failed-logon spikes.
 
 ### Validation
 | **Check**| **Result** |
 |:-------- |:-------- |
-| Device reporting to Defender and healthy | Pass |
+| Device reporting to Defender and healthy after it was re-onboarded | Pass |
 | No remaining alerts on the device |  Pass |
 | Not being able to login from the local account test_user1 |  Pass |
 | Incident closed with classification and comments |  Pass (True positive, classification noted as a lab test) |
 
 # Post-Incident Activity
 ### Root Cause
-The root cause was weak access controls on the endpoint test-Vm. The local account test_user1 could be used for a remote logon with only username and password, with no MFA, no account lockout and no restrictions on which IP addresses could connect. Because it is a local account, it also fell outside the Entra ID Protection and Conditional Access, so nothing challenged or flagged the sign-in. Once logged on, the account could run PowerShell freely with the execution policy bypassed, which allowed the Atomic Red Team discovery tests (T1016, T1059) to run unrestricted. Detection depended on behavior-based rules which took a little bit of time to showup as an alert in the Defender Portal.
+The root cause was weak access controls on the endpoint 'test-Vm'. The local account test_user1 could be used for a remote logon with only username and password, with no MFA, no account lockout and no restrictions on which IP addresses could connect. Because the account is local, it falls outside the scope of Entra ID Protection and Conditional Access, so sign-in was neither challenged nor flagged. The account then ran PowerShell with the execution policy bypassed, allowing the Atomic Red Team tests (T1016, T1059) to execute unrestricted. Detection depended on behavior-based rules which generated an alert in the Defender Portal after a short delay.
 
 ### What Went Well and What Did Not
 | **Went Well**| **Needs improvement** |
@@ -229,7 +231,6 @@ The root cause was weak access controls on the endpoint test-Vm. The local accou
 | Defender caught the activity and tagged it with MITRE techniques (T1016, T1059) and a "Remote execution" label which made the source of the session easy to see| A local account with valid credentials was enough to log on remotely and run PowerShell with no challenge. MFA, Entra ID and conditional access needs to be in place. |
 | Device timeline and script block logs gave a clear record of the exact commands that was ran on PowerShell | ``powershell.exe`` and ``cmd.exe`` being MS-signed made it harder to detect and depended on behavior and command lines.  |
 | Isolation preserved Defender connectivity, so evidence could be collected |   |
-
 
 
 ### Lessons Learned and Recommendations
@@ -245,17 +246,17 @@ The root cause was weak access controls on the endpoint test-Vm. The local accou
 |:-------- |:-------- |:-------- |
 | Mean Time to Detect (MTTD) | 12 mins | Suspicious commands run on PowerShell  |
 | Mean Time to Respond (MTTR) | 23 mins |  Incident Creation to containment start |
-| Mean Time to Recover | 76 mins | Medium | Incident Creation to device restored |
+| Mean Time to Recover | 48 hours  | Time took re-image the VM after wiping the device fully |
 | Alerts / Incidents involved | 2 alerts, 1 incident | Correlated in Defender XDR |
 
-### Closure (rewrite)
+### Conclusion
 The incident was closed in Defender as **True positive** with a comment summarizing the findings and a link to this report. Recommendations 3 and 4 are tracked as follow-up tasks.
 
 ## Appendix A: Evidence Checklist
-##### Image 1: Alert page
+##### Image 1
 <img width="1433" height="591" alt="Incident-page" src="https://github.com/user-attachments/assets/9830f34b-f8be-422c-9c96-da920034ea1d" />
 
-##### Image 2: Incident page
+##### Image 2
 <img width="1471" height="328" alt="image" src="https://github.com/user-attachments/assets/118abb6f-76bc-4778-bf5b-ef17600c39fd" />
 
 ##### Image 3: Timeline
@@ -289,3 +290,4 @@ The incident was closed in Defender as **True positive** with a comment summariz
   -  T1078.003 https://attack.mitre.org/techniques/T1078/003/
 - Microsoft Learn: Defender XDR incident response and advanced hunting.
 - Manage your live response library directly in Microsoft Defender. https://www.modernsecurity.nl/live-response-library-in-microsoft-defender/
+- Microsoft Live response. https://learn.microsoft.com/en-us/defender-endpoint/live-response-command-examples
