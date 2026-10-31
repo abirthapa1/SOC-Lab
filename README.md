@@ -91,7 +91,7 @@ This section records the controls and readiness in place before the incident, wh
 
 # Detection and Analysis
 ### Detection
-The alert was created on 29 Oct 2026 at 00:38 UTC-8 with two alerts [[Image 1](#Image-1)] one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident 'Incident ID 2' [[Image 2](#Image-2)]. The analyst immediately picked on to the alert that was created and within seconds 
+The alert was created on 29 Oct 2026 at 00:38 UTC-8 with two alerts [[Image 1](#Image-1)] one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident 'Incident ID 2' [[Image 2](#Image-2)]. The analyst immediately picked on to the alert that was created and within seconds the device was isolated.
 
 ### Initial Triage and Prioritization
 - **Asset Criticality**: Medium (No production data), but internet-exposed through RDP
@@ -192,7 +192,7 @@ True positive (simulated). The detection correctly identified a bunch of command
 
 # Containment, Eradication and Recovery
 ### Containment
-Short-term containment limited the attacker's ability to act while evidence was preserved.
+Short-term containment limited the attacker's ability to act while evidence was preserved. [Image 10](#Image-10)
 | **Time**| **Action**| **By**| **Result** |
 |:-------- |:-------- |:-------- | :------ |
 | 2026-10-29 00:39 | Isolated test-Vm from the network using Defender 'Isolate Device' | Jean Arc (Security Admin) |  Device isolated, sensor still reporting |
@@ -279,6 +279,9 @@ The incident was closed in Defender as **True positive** with a comment summariz
 
 ##### Image 9
 <img width="999" height="297" alt="image" src="https://github.com/user-attachments/assets/e212aca0-dbd1-4865-9cb5-914493d0510f" />
+
+##### Image 10
+<img width="1215" height="714" alt="image" src="https://github.com/user-attachments/assets/f206a2b4-8c73-44f1-ab3e-fa007d48ebaf" />
 
 
 ## Appendix B: References
