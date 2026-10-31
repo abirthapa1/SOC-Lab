@@ -91,7 +91,7 @@ This section records the controls and readiness in place before the incident, wh
 
 # Detection and Analysis
 ### Detection
-The alert was created on 29 Oct 2026 at 00:38 UTC-8 with two alerts [[Image 1](#Image-1-Alert-page)] one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident 'Incident ID 2'.[[Image 2](#Image-2-incident-page)]. The analyst immediately picked on to the alert that was created and within seconds 
+The alert was created on 29 Oct 2026 at 00:38 UTC-8 with two alerts [[Image 1](#Image-1)] one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident 'Incident ID 2' [[Image 2](#Image-2)]. The analyst immediately picked on to the alert that was created and within seconds 
 
 ### Initial Triage and Prioritization
 - **Asset Criticality**: Medium (No production data), but internet-exposed through RDP
