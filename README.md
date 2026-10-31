@@ -117,7 +117,7 @@ The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts [[Image 1]
 
 ### Evidence and Queries
 - KQL for checking the logon users [[Image 4](#Image-4)]
-``
+```
 let StartT = datetime(2026-10-28T08:00:00Z);
 let EndT   = datetime(2026-10-29T09:00:00Z);
 DeviceLogonEvents
@@ -125,10 +125,10 @@ DeviceLogonEvents
 | where DeviceName startswith "test-vm"
 | project Timestamp, ActionType, AccountName, LogonType, RemoteIP, RemoteDeviceName, IsLocalAdmin
 | order by Timestamp asc
-``
+```
 
 - KQL for checking the text file created (open-ports.txt) [[Image 5](#Image-5)]
-``
+```
 let StartT = datetime(2026-10-28T08:00:00Z);
 let EndT   = datetime(2026-10-29T09:00:00Z);
 DeviceProcessEvents
@@ -137,11 +137,11 @@ DeviceProcessEvents
 | where ProcessCommandLine has_any ("open-ports.txt")
 | project Timestamp, AccountName, FileName, ProcessId, ProcessCommandLine, InitiatingProcessFileName
 | order by Timestamp asc
-``
+```
 
 
 - Query to see the ``PowerShell.exe`` and ``cmd.exe`` was ran [[Image 6](#Image-6)]
-``
+```
 let StartT = datetime(2026-10-28T08:00:00Z);
 let EndT   = datetime(2026-10-29T09:00:00Z);
 DeviceProcessEvents
@@ -151,7 +151,7 @@ DeviceProcessEvents
 | project Timestamp, AccountName, FileName, ProcessId, ProcessCommandLine,
           InitiatingProcessFileName, InitiatingProcessId, ProcessTokenElevation, ProcessIntegrityLevel
 | order by Timestamp asc
-``
+```
 - Brought the device into isolation. [[Image 7](#Image-7)]
 - Remediated the text file(open-ports.txt). [[Image 8](#Image-8)]
 - Uploaded a powershell script to remove the local account from the device. [[Image 9](#Image-9)]
