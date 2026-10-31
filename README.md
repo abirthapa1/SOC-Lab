@@ -95,7 +95,7 @@ The alert was created on 29 Oct 2026 at 00:38 UTC-8 with two alerts [[Image 1](#
 
 ### Initial Triage and Prioritization
 - **Asset Criticality**: Medium (No production data), but internet-exposed through RDP
-- **Pattern**: '49' powershell.exe scripts ran in a span of 10 minutes, from a local account with a creation of open-ports.txt.
+- **Pattern**: 49 powershell.exe scripts ran in a span of 10 minutes, from a local account with a creation of open-ports.txt.
 - **Severity decision**: raised it to High, after the user started running more PowerShell scripts with the intention of knowing the network configuration of the system and saving the all the open ports in a text file.
 
 ### Investigation Timeline (UTC-8)
