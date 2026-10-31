@@ -91,16 +91,16 @@ This section records the controls and readiness in place before the incident, wh
 
 # Detection and Analysis
 ### Detection
-The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident [Incident ID 2]. An email notification reached the analyst within [4] minutes of the incident being created.
+The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts[Image 1](#Image-1) one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident [Incident ID 2].[Image 2](#Image-2) An email notification reached the analyst within [4] minutes of the incident being created.
 
 ##### Image 1: Incident Page
-<img width="1433" height="591" alt="Incident-page" src="https://github.com/user-attachments/assets/9830f34b-f8be-422c-9c96-da920034ea1d" />
+
 
 ##### Image 2: Alert Page
-<img width="1471" height="328" alt="image" src="https://github.com/user-attachments/assets/118abb6f-76bc-4778-bf5b-ef17600c39fd" />
+
 
 ##### Image 3: Timeline
-<img width="1735" height="870" alt="image" src="https://github.com/user-attachments/assets/fc291939-0cff-43f8-a595-f82cd955931e" />
+
 
 
 ### Initial Triage and Prioritization
@@ -126,15 +126,45 @@ The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts one for Co
 
 
 ### Evidence and Queries
+- KQL for checking the logon users [Image 4](#Image-4)
+``
+let StartT = datetime(2026-10-28T08:00:00Z);
+let EndT   = datetime(2026-10-29T09:00:00Z);
+DeviceLogonEvents
+| where Timestamp between (StartT .. EndT)
+| where DeviceName startswith "test-vm"
+| project Timestamp, ActionType, AccountName, LogonType, RemoteIP, RemoteDeviceName, IsLocalAdmin
+| order by Timestamp asc
+``
 
+- KQL for checking the text file created (open-ports.txt) [Image 5](#Image-5)
 ``
+let StartT = datetime(2026-10-28T08:00:00Z);
+let EndT   = datetime(2026-10-29T09:00:00Z);
 DeviceProcessEvents
-| where DeviceName =~ "test-Vm" and Timestamp > ago(24h)
+| where Timestamp between (StartT .. EndT)
+| where DeviceName startswith "test-vm"
 | where ProcessCommandLine has_any ("open-ports.txt")
-| project Timestamp, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName
+| project Timestamp, AccountName, FileName, ProcessId, ProcessCommandLine, InitiatingProcessFileName
+| order by Timestamp asc
 ``
-##### Image : Output for the above KQL query
-<img width="1160" height="875" alt="image" src="https://github.com/user-attachments/assets/ac9048d0-5965-42ec-815a-c47789dd21cb" />
+
+
+- Query to see the ``PowerShell.exe`` and ``cmd.exe`` was ran [Image 6](#Image-6)
+``
+let StartT = datetime(2026-10-28T08:00:00Z);
+let EndT   = datetime(2026-10-29T09:00:00Z);
+DeviceProcessEvents
+| where Timestamp between (StartT .. EndT)
+| where DeviceName startswith "test-vm"
+| where FileName in~ ("powershell.exe","cmd.exe")
+| project Timestamp, AccountName, FileName, ProcessId, ProcessCommandLine,
+          InitiatingProcessFileName, InitiatingProcessId, ProcessTokenElevation, ProcessIntegrityLevel
+| order by Timestamp asc
+``
+- Brought the device into isolation.[Image 7](#Image-7)
+- Remediated the text file(open-ports.txt).[Image 8](#Image-8)
+- Uploaded a powershell script to remove the local account from the device.[Image 9](#Image-9)
 
 
 ### Scope and Impact
@@ -147,7 +177,6 @@ DeviceProcessEvents
 | Was data modified? | Minor. ``open-ports.txt`` was setup on the Desktop. |
 | Was there any lateral movement? | None observed |
 | Was persistence established ? | None found. Check for new accounts, scheduled tasks, services and startup items. |
-| Was data accessed? | Nothing sensitive |
 
 
 ### MITRE ATT&CK Mapping
@@ -233,6 +262,33 @@ The root cause was weak access controls on the endpoint test-Vm. The local accou
 The incident was closed in Defender as **True positive** with a comment summarizing the findings and a link to this report. Recommendations 3 and 4 are tracked as follow-up tasks.
 
 ## Appendix A: Evidence Checklist
+##### Image 1: Alert page
+<img width="1433" height="591" alt="Incident-page" src="https://github.com/user-attachments/assets/9830f34b-f8be-422c-9c96-da920034ea1d" />
+
+##### Image 2: Incident page
+<img width="1471" height="328" alt="image" src="https://github.com/user-attachments/assets/118abb6f-76bc-4778-bf5b-ef17600c39fd" />
+
+##### Image 3: Timeline
+<img width="1735" height="870" alt="image" src="https://github.com/user-attachments/assets/fc291939-0cff-43f8-a595-f82cd955931e" />
+
+##### Image 4
+<img width="1435" height="772" alt="image" src="https://github.com/user-attachments/assets/65faa86b-0fdb-46d8-9158-883a8d3bbbe7" />
+
+##### Image 5
+<img width="1446" height="766" alt="image" src="https://github.com/user-attachments/assets/e4c782b2-5160-4fca-924c-207c9c3e562d" />
+
+##### Image 6
+<img width="1446" height="766" alt="image" src="https://github.com/user-attachments/assets/78abdcfa-c371-4039-bc66-dc6ae76df4a0" />
+
+##### Image 7
+<img width="1036" height="378" alt="image" src="https://github.com/user-attachments/assets/2a5c6742-5d71-498d-a9a1-fb4f6c1b9c39" />
+
+##### Image 8
+<img width="984" height="375" alt="image" src="https://github.com/user-attachments/assets/22aa8939-a825-42ea-b47a-6af72582a225" />
+
+##### Image 9
+<img width="999" height="297" alt="image" src="https://github.com/user-attachments/assets/e212aca0-dbd1-4865-9cb5-914493d0510f" />
+
 
 ## Appendix B: References
 - NIST SP 800-61 Rev.2, Computer Security Incident Handling Guide (four-phase lifecycle used here). https://doi.org/10.6028/NIST.SP.800-61r2 
