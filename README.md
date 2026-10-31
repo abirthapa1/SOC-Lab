@@ -12,7 +12,7 @@ This is a documentation of an incident response report that was done in a contro
   - [Readiness Checklist](#Readiness-Checklist)
 - [Detection and Analysis](#Detection-and-Analysis)
   - [Detection](#Detection)
-  - [Inital Triage and Prioritization](#Initial-Triage-and-Prioritization)
+  - [Initial Triage and Prioritization](#Initial-Triage-and-Prioritization)
   - [Investigation Timeline (UTC-8)](#Investigation-Timeline)
   - [Evidence and Queries](#Evidence-and-Queries)
   - [Scope and Impact](#Scope-and-Impact)
@@ -43,19 +43,19 @@ This is a documentation of an incident response report that was done in a contro
 | **Severity**    | High (Defender Severity: High; Adjusted after triage)   |
 | **Classification**    | True positive - simulated activity   |
 | **Detection source**    | EDR   |
-| **Affected asset**     | test-Vm : Windows 11 Enterpise VM, onboarded to Defender for Endpoint   |
+| **Affected asset**     | test-Vm : Windows 11 Enterprise VM, onboarded to Defender for Endpoint   |
 | **Affected account(s)**     | test_user1 (local account)  |
 | **Detected / Closed**     | [2026-10-29 00:38 UTC-8] / [2026-10-30 1:00 UTC-8, after 24 h monitoring   |
 | **Analyst / Reviewer**     | Abir, SOC Analyst / Self-reviewed (lab)   |
 | **Framework**     | NIST SP 800-61; MITRE ATT&CK  |
 
 ### Executive Summary
-On 29 Oct 2026 at 00:38 UTC-8, Microsoft Defender XDR raised an incident after detecting repeated PowerShell script execution on the endpoint 'test-Vm' following a successful log on by the local account 'test_user1'. The commands collected network configuration details and tested which outbound ports were open. This is consistent with the discovery stage of an attack (MITRE ATT&CK T1016, T1059). The activity came from an authorized lab simulation, but was handled as a real credential compromise. No sensitive data was accessed and no other assets were affected; the only change was one new text file listing the open ports. The root cause was that valid credentials could be used to log on and run PowerShell unchallenged, however, the account had a weak password and no log on restrictions. Response actions were to remove the user, remove the generated file, and block the source address in the network security group, after which the endpoint was monitored for 24 hours with no further suspicious activity and declared clean.
+On 29 Oct 2026 at 00:38 UTC-8, Microsoft Defender XDR raised an incident after detecting repeated PowerShell script execution on the endpoint 'test-Vm' following a successful log on by the local account 'test_user1'. The commands collected network configuration details and tested which outbound ports were open. This is consistent with the discovery stage of an attack (MITRE ATT&CK T1016, T1059). The activity came from an authorized lab simulation, but was handled as a real credential compromise. No sensitive data was accessed and no other assets were affected; the only change was one new text file listing the open ports. The root cause was that valid credentials could be used to log on and run PowerShell unchallenged, with no log on restrictions. Response actions were to remove the user, remove the generated file and block the source address in the network security group, after which a complete wipe was done and a fresh installation of the VM was onboarded using endpoint which was monitored for 48 hours with no further suspicious activity and declared clean.
 
 ### Key Facts at a Glance
 | **Time to Detect**| **Time to Contain**| **Time to Recover**| **Assets affected**| **Data Impact**|
 |:-------- |:-------- |:-------- |:-------- |:-------- |
-| 12 mins | 23 mins | 48 hours | 1 endpoint, 1 account | None identified |
+| 2 mins | 30 secs | 48 hours | 1 endpoint, 1 account | None identified |
 
 # Preparation
 This section records the controls and readiness in place before the incident, which determines how quickly it can be detected and handled.
@@ -84,8 +84,7 @@ This section records the controls and readiness in place before the incident, wh
 | Endpoint onboarded and reporting | Yes | Device visible in Assets > Devices |
 | Sign-in and device logs reaching Sentinel | Yes | Verified with SigninLogs and DeviceLogOnEvents queries |
 | Alert notifications tested | Yes | Test alert delivered by email |
-| Custom detection for repeated | Yes (need to redo) | Identity telemetry |
-| Account lockout policy | Yes (need to redo) | Analyst alerting |
+| Suspicious Log on | Yes | Identity telemetry |
 | RDP restricted to trusted IP in the NSG | Partial | Open to a wide range, narrowed after this incident |
 | Incident response procedure documented | Yes | This report follows NIST SP 800-61 |
 
@@ -271,8 +270,8 @@ The root cause was weak access controls on the endpoint 'test-Vm'. The local acc
 ### Metrics
 | **Metric**| **Value** | **Definition** |
 |:-------- |:-------- |:-------- |
-| Mean Time to Detect (MTTD) | 12 mins | Suspicious commands run on PowerShell  |
-| Mean Time to Respond (MTTR) | 23 mins |  Incident Creation to containment start |
+| Mean Time to Detect (MTTD) | 2 mins | Suspicious commands run on PowerShell  |
+| Mean Time to Respond (MTTR) | 30 secs |  Incident Creation to containment start |
 | Mean Time to Recover | 48 hours  | Time took re-image the VM after wiping the device fully |
 | Alerts / Incidents involved | 2 alerts, 1 incident | Correlated in Defender XDR |
 
