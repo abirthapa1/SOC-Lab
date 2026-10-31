@@ -91,17 +91,7 @@ This section records the controls and readiness in place before the incident, wh
 
 # Detection and Analysis
 ### Detection
-The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts [[Image 1](#Image-1)] one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident [Incident ID 2].[Image 2](#Image-2) An email notification reached the analyst within [4] minutes of the incident being created.
-
-##### Image 1: Incident Page
-
-
-##### Image 2: Alert Page
-
-
-##### Image 3: Timeline
-
-
+The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts [[Image 1](#Image-1-Alert-page)] one for Compromised account conducting hands-on-keyboard attack and the other one for Suspicious DNS server discovery. Defender grouped the two alerts into incident [Incident ID 2].[[Image 2](#Image-2-incident-page)] An email notification reached the analyst within [4] minutes of the incident being created.
 
 ### Initial Triage and Prioritization
 - **Asset Criticality**: Medium (No production data), but internet-exposed through RDP
@@ -126,7 +116,7 @@ The alert was created on [29 Oct 2026 at 00:38 UTC-8] with two alerts [[Image 1]
 
 
 ### Evidence and Queries
-- KQL for checking the logon users [Image 4](#Image-4)
+- KQL for checking the logon users [[Image 4](#Image-4)]
 ``
 let StartT = datetime(2026-10-28T08:00:00Z);
 let EndT   = datetime(2026-10-29T09:00:00Z);
@@ -137,7 +127,7 @@ DeviceLogonEvents
 | order by Timestamp asc
 ``
 
-- KQL for checking the text file created (open-ports.txt) [Image 5](#Image-5)
+- KQL for checking the text file created (open-ports.txt) [[Image 5](#Image-5)]
 ``
 let StartT = datetime(2026-10-28T08:00:00Z);
 let EndT   = datetime(2026-10-29T09:00:00Z);
@@ -150,7 +140,7 @@ DeviceProcessEvents
 ``
 
 
-- Query to see the ``PowerShell.exe`` and ``cmd.exe`` was ran [Image 6](#Image-6)
+- Query to see the ``PowerShell.exe`` and ``cmd.exe`` was ran [[Image 6](#Image-6)]
 ``
 let StartT = datetime(2026-10-28T08:00:00Z);
 let EndT   = datetime(2026-10-29T09:00:00Z);
@@ -162,9 +152,9 @@ DeviceProcessEvents
           InitiatingProcessFileName, InitiatingProcessId, ProcessTokenElevation, ProcessIntegrityLevel
 | order by Timestamp asc
 ``
-- Brought the device into isolation.[Image 7](#Image-7)
-- Remediated the text file(open-ports.txt).[Image 8](#Image-8)
-- Uploaded a powershell script to remove the local account from the device.[Image 9](#Image-9)
+- Brought the device into isolation. [[Image 7](#Image-7)]
+- Remediated the text file(open-ports.txt). [[Image 8](#Image-8)]
+- Uploaded a powershell script to remove the local account from the device. [[Image 9](#Image-9)]
 
 
 ### Scope and Impact
